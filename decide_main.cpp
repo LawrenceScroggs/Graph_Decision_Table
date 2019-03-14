@@ -10,18 +10,27 @@
 
 int main(){
 
+  getInfo to_add;
   table list;
-  vertex add_v;
   edge add_e;
+
+  bool again = true;
 
   
 
-  add_v = list.get_decision(&add_v);
-
-  cout << "name " << add_v.decision << endl;
+ do{
 
 
+  to_add.getVertex();
+  
 
+  again = list.insert_decision(to_add);
+
+
+ }
+  while(again != false);
+
+ //add_e.get_outcome();
 
   return 0;
 }

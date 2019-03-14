@@ -8,21 +8,47 @@
 
 using namespace std;
 
+
+
+class getInfo{
+
+  public:
+    int getVertex();
+    int getEdge();
+
+    int copy_vertex(const getInfo & to_add);
+
+  private:
+    int getVertex_p(); 
+    int getEdge_p();
+
+    char * vertex_info;
+    char * edge_info;
+
+
+};
 class edge{
 
+  friend class table;
   public:
     edge();
     ~edge();
-    char * outcome;
-    edge * next;
     class vertex * connect;
-};
-class vertex{
+    int get_outcome(getInfo & to_add);
+    
 
-  public:
-    vertex();
-    ~vertex();
-    char * decision;
+  private:
+    getInfo * outcome;
+    edge * next;
+};
+struct vertex{
+
+ // friend class table;
+ // public:
+  //  vertex();
+   // ~vertex();
+
+    getInfo * decision;
     edge * head;
 
 };
@@ -32,21 +58,22 @@ class table{
 
     table();
     ~table();
-    vertex get_decision(vertex * add_v);
-    int insert_decision(vertex * add_v);
+    bool insert_decision(getInfo & to_add);
     int display_connections(vertex * add_v, edge * add_e);
     int display_all(vertex * add_v,edge * add_e);
 
   private:
 
-    int insert_decision_p(vertex *& to_add,edge *& add_e);
+    bool insert_decision_p(const getInfo & to_add);
     int insert_outcome(vertex *& add_v,edge *& add_e);
 
+    vertex add_v;
     vertex * table_list;
+    vertex * temp;
 
     int list_size;
 
-    int table_count = 0;
+    int count = 0;
 
 };
 
