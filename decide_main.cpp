@@ -12,7 +12,9 @@ int main(){
 
   getInfo to_add;
   table list;
-  edge add_e;
+
+  char * temp_vertex = new char[100];
+
 
   bool again = true;
 
@@ -20,8 +22,11 @@ int main(){
 
  do{
 
+  cout << "Please enter a possible outcome: ";
+  cin.get(temp_vertex,100);
+  cin.ignore(100,'\n');
 
-  to_add.getVertex();
+  to_add.getVertex(temp_vertex);
   
 
   again = list.insert_decision(to_add);

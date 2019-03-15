@@ -5,15 +5,27 @@
 
 
 
+char * getInfo::getter(){
 
+
+  return vertex_info;
+  
+
+}
 int getInfo::copy_vertex(const getInfo & to_add){
 
-  cout << "info " << to_add.vertex_info << endl;
 
-   char * decision = new char[strlen(to_add.vertex_info)+1];
-   strcpy(decision,to_add.vertex_info);
+  char * temp = new char[strlen(to_add.vertex_info)+1];
+  strcpy(temp,to_add.vertex_info);
 
-  return *decision;
+  cout << "temp: " << temp << endl;
+
+  int p = getVertex(temp);
+
+  
+
+
+  return p;
 
 
 } 
@@ -38,7 +50,7 @@ int getInfo::getEdge_p(){
   cin.ignore(200,'\n');
   edge_info = new char[strlen(temp)+1];
   strcpy(edge_info,temp);
-  
+ 
   delete [] temp;
 
   return 0;
@@ -73,11 +85,11 @@ bool table::insert_decision_p(const getInfo & to_add){
   {
     if(!table_list[count].decision)
     {
-      getInfo * data = new getInfo;
-      data->copy_vertex(to_add);
+     getInfo * data = new getInfo;
+     data->copy_vertex(to_add);
 
       table_list[count].decision = data;
-      cout << "Table at count: " << count << " Decision: " << table_list[count].decision << endl;
+      cout << "Table at count: " << count << " Decision: " << table_list[count].decision->getter() << endl;
     
       return true;
     }
@@ -90,9 +102,9 @@ bool table::insert_decision_p(const getInfo & to_add){
     }
   }
 }
-int getInfo::getVertex(){
+int getInfo::getVertex(char * temp){
 
-  int check = getVertex_p();
+  int check = getVertex_p(temp);
 
   if(check != 0)
   {
@@ -103,20 +115,14 @@ int getInfo::getVertex(){
   else
     return 0;
 }
-int getInfo::getVertex_p(){
+int getInfo::getVertex_p(char * temp){
 
  
-  cout << "Please enter one of the possible decisions: ";
-  char * temp = new char[100];
-  cin.get(temp,100);
-  cin.ignore(100,'\n');
   vertex_info = new char[strlen(temp)+1];
   strcpy(vertex_info,temp);
 
   cout << "vertex info" << vertex_info << endl;
 
-  delete [] temp;
-  
   return 0;
 
 }
@@ -132,19 +138,26 @@ table::table(){
     table_list[i].head = NULL;
   }
 
-  temp = NULL;
 }
 table::~table(){
 
 
 }
-edge::edge(){
+/*edge::edge(){
 
   next = NULL;
 }
 edge::~edge(){
 
   delete next;
+
+}*/
+getInfo::getInfo(){
+
+  vertex_info = NULL;
+  edge_info = NULL;
+}
+getInfo::~getInfo(){
 
 }
 /*vertex::vertex(){
