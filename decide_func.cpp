@@ -1,62 +1,137 @@
+// Lawrence Scroggs--CS163--Program5--03/10/19
 // This will store the implementation of my function prototypes
 
 
 #include "decide.h"
 
 
+// connects to better decision outcome
+int table::better_decision(){
 
-char * getInfo::getter(){
+  char * better = new char[100];
 
+  cout << "Does this outcome result in better decision? ";
+  cin.get(better,100);
+  cin.ignore(100,'\n');
 
-  return vertex_info;
-  
-
-}
-int getInfo::copy_vertex(const getInfo & to_add){
-
-
-  char * temp = new char[strlen(to_add.vertex_info)+1];
-  strcpy(temp,to_add.vertex_info);
-
-  cout << "temp: " << temp << endl;
-
-  int p = getVertex(temp);
-
-  
+  int p = find_index(better);
 
 
   return p;
+}
+// displays certain vertex and its outcomes
+int table::display_vertex(char * to_find){
 
+  int p = find_index(to_find);
 
-} 
-int getInfo::getEdge(){
-
-  int check = getEdge_p();
-
-  if(check != 0)
-  {
-    cout << "ERROR" << endl;
-    return 0;
-  }
+  if(!table_list[p].decision)
+    return -1;
 
   else
-    return 0;
-}
-int getInfo::getEdge_p(){
+  {
+    cout << "Decision: " << table_list[p].decision << endl;
+    edge * current = table_list[p].head;
+    while(current)
+    {
+      cout << "Outcome: " << current->outcome << endl;
+      current = current->next;
+    }
+  }
 
-  cout << "Please enter possible outcome: ";
-  char * temp = new char[200];
-  cin.get(temp,200);
-  cin.ignore(200,'\n');
-  edge_info = new char[strlen(temp)+1];
-  strcpy(edge_info,temp);
+ return -1;
+}
+// display all
+int table::display_all(){
+
+  count = 0;
+
+  if(!table_list[count].decision)
+    return -1;  
+  
+  while(count <= (list_size -1) && table_list[count].decision)
+  {
+    cout << "Decision: " << table_list[count].decision << endl;
+    edge * current = table_list[count].head;
+    while(current)
+    {
+      cout << "Outcome: " << current->outcome << endl;
+      current = current->next;
+
+    }
+    ++count;
+  }
+  ++count;
+}
+// finds the decision in which we want to connect the outcome
+int table::find_index(char * temp2){
+
+  count = 0;
+      //return the location of this particular key value
+  while(count < list_size){
+
+    if(!table_list[count].decision)
+      ++count;
+
+
+    if(strcmp(table_list[count].decision,temp2) == 0){
+        return count;
+    }
+    else
+      ++count;
+        
+    }
+  if(count >= list_size -1)
+    return -1;
+}
+// connects edge to vertex
+bool table::connect_edge(char * temp, char * temp2){
+
+  int i = find_index(temp2);
+
+  if(table_list[i].head == NULL)
+  {
+    edge * newHead = new edge;
+    newHead->adjacent = &table_list[i];
+    newHead->outcome = new char[strlen(temp)+1];
+    strcpy(newHead->outcome,temp);
+    table_list[i].head = newHead;
+    
+    table_list[i].head->next = NULL;
+  }
+  else
+  {
+    edge * newHead = new edge;
+    newHead->adjacent = &table_list[i];
+    newHead->outcome = new char[strlen(temp)+1];
+    strcpy(newHead->outcome,temp);
+    newHead->next = table_list[i].head;
+
+    table_list[i].head = newHead;
+    } 
+}
+// gets edge info
+bool table::getEdge(char * temp,char * temp2){
+
+
+  connect_edge(temp,temp2);
  
-  delete [] temp;
+  char yn = ' ';
 
-  return 0;
+  cout << "Would you like to add another outcome? ";
+  cin >> yn;
+  cin.ignore(100,'\n');
+  if(yn != 'n')
+    return true;
+  else
+    return false;
+
+  delete [] temp;
+  delete [] temp2;
+
 
 }
-bool table::insert_decision(getInfo & to_add){
+// grabs info for client to redo
+bool table::insert_decision(getInfo * to_add){
 
   bool check = true;
   char yn = ' ';
@@ -65,7 +140,7 @@ bool table::insert_decision(getInfo & to_add){
 
   if(check == true)
   {
-    cout << "Would you like to add another? ";
+    cout << "Would you like to add another decision? ";
     cin >> yn;
     cin.ignore(100,'\n');
     if(yn != 'n')
@@ -76,8 +151,9 @@ bool table::insert_decision(getInfo & to_add){
   else
     return false;
 
-}  
-bool table::insert_decision_p(const getInfo & to_add){
+}
+// inserts the deciion into table
+bool table::insert_decision_p(getInfo * to_add){
 
   count = 0;
 
@@ -85,11 +161,9 @@ bool table::insert_decision_p(const getInfo & to_add){
   {
     if(!table_list[count].decision)
     {
-     getInfo * data = new getInfo;
-     data->copy_vertex(to_add);
 
-      table_list[count].decision = data;
-      cout << "Table at count: " << count << " Decision: " << table_list[count].decision->getter() << endl;
+      table_list[count].decision = new char[strlen(to_add->vertex_info)];
+      strcpy(table_list[count].decision,to_add->vertex_info);
     
       return true;
     }
@@ -115,13 +189,12 @@ int getInfo::getVertex(char * temp){
   else
     return 0;
 }
+// grabs info for vertex
 int getInfo::getVertex_p(char * temp){
 
  
   vertex_info = new char[strlen(temp)+1];
   strcpy(vertex_info,temp);
-
-  cout << "vertex info" << vertex_info << endl;
 
   return 0;
 
@@ -141,32 +214,14 @@ table::table(){
 }
 table::~table(){
 
+  delete table_list;
 
 }
-/*edge::edge(){
-
-  next = NULL;
-}
-edge::~edge(){
-
-  delete next;
-
-}*/
 getInfo::getInfo(){
 
   vertex_info = NULL;
-  edge_info = NULL;
 }
 getInfo::~getInfo(){
 
+  delete vertex_info;
 }
-/*vertex::vertex(){
-
-  decision = NULL;
-  head = NULL;
-}
-vertex::~vertex(){
-
-  delete head;
-
-}*/

@@ -1,3 +1,4 @@
+// Lawrence Scroggs--CS163--Program5--03/10/19
 // this file will hold the prototypes for the graph 
 // and the class implementation
 
@@ -9,43 +10,34 @@
 using namespace std;
 
 
-
 class getInfo{
 
   public:
     getInfo(void);
     ~getInfo();
-    int getVertex(char * temp_vertex);
-    int getEdge();
+    int getVertex(char * temp); // Gets the info to add to vertex list
 
-    int copy_vertex(const getInfo & to_add);
-    char * getter();
+    char * v_info();
 
-  private:
-    int getVertex_p(char * temp_vertex); 
-    int getEdge_p();
+    int getVertex_p(char * temp); 
 
     char * vertex_info;
-    char * edge_info;
 
 
 };
 struct edge{
-   
 
-    vertex * key_value;
-    getInfo * outcome;
-    edge * next;
+    struct vertex * adjacent;
+    struct vertex * newDecision;
+    char * outcome;
+    edge * next = NULL;
+    
 };
 struct vertex{
 
- // friend class table;
- // public:
-  //  vertex();
-   // ~vertex();
-
-    getInfo * decision;
+    getInfo * grabInfo;
     edge * head;
+    char * decision;
 
 };
 class table{
@@ -54,14 +46,18 @@ class table{
 
     table();
     ~table();
-    bool insert_decision(getInfo & to_add);
-    int display_connections(vertex * add_v, edge * add_e);
-    int display_all(vertex * add_v,edge * add_e);
+    bool insert_decision(getInfo * to_add);
+    int display_vertex(char * to_find);
+    int display_all();
+    int find_index(char * key_value);
+    int better_decision();
 
+    bool getEdge(char * temp,char * temp2);
   private:
 
-    bool insert_decision_p(const getInfo & to_add);
-    int insert_outcome(vertex *& add_v,edge *& add_e);
+    bool insert_decision_p(getInfo * to_add);
+
+    bool connect_edge(char * temp, char * temp2);
 
     vertex * table_list;
 
