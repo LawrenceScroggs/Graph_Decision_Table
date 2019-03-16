@@ -50,6 +50,7 @@ int main(){
     again = list.getEdge(temp_edge,connection);
 
 
+
   }while(again != false);
   list.display_all();
   cout << "Please enter the vertex you are looking to display: ";

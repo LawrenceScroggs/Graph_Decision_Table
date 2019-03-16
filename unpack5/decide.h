@@ -57,7 +57,7 @@ class table{
 
     bool insert_decision_p(getInfo * to_add);
 
-    int connect_edge(char * temp, char * temp2);
+    bool connect_edge(char * temp, char * temp2);
 
     vertex * table_list;
 

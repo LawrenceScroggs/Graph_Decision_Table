@@ -9,20 +9,18 @@
 int table::better_decision(){
 
   char * better = new char[100];
-  char yesNo = ' ';
-
+  char * yn = ' ';
 
   cout << "Does this outcome result in better decision? ";
-  cin >> yesNo;
+  cin >> yn;
   cin.ignore(100,'\n');
-
-  if(yesNo == 'y')
+  if(yn == 'y')
   {
-    cout << "Please enter the better decision: ";
     cin.get(better,100);
     cin.ignore(100,'\n');
 
     int p = find_index(better);
+
     return p;
   }
   else
@@ -42,11 +40,7 @@ int table::display_vertex(char * to_find){
     edge * current = table_list[p].head;
     while(current)
     {
-      if(current->outcome)
-        cout << "Outcome: " << current->outcome << endl;
-      else if(current->newDecision)
-        cout << "Better Decision: " << current->newDecision->decision << endl;
-
+      cout << "Outcome: " << current->outcome << endl;
       current = current->next;
     }
   }
@@ -67,10 +61,8 @@ int table::display_all(){
     edge * current = table_list[count].head;
     while(current)
     {
-      if(current->outcome)
-        cout << "Outcome: " << current->outcome << endl;
+      cout << "Outcome: " << current->outcome << endl;
       current = current->next;
-
 
     }
     ++count;
@@ -87,7 +79,8 @@ int table::find_index(char * temp2){
     if(!table_list[count].decision)
       ++count;
 
-    else if(strcmp(table_list[count].decision,temp2) == 0){
+
+    if(strcmp(table_list[count].decision,temp2) == 0){
         return count;
     }
     else
@@ -98,23 +91,21 @@ int table::find_index(char * temp2){
     return -1;
 }
 // connects edge to vertex
-int table::connect_edge(char * temp, char * temp2){
+bool table::connect_edge(char * temp, char * temp2){
 
   int i = find_index(temp2);
-  if(i == -1)
-    return -1;
+  cout << "here" <<endl;
   int p = better_decision();
-  
+
   if(table_list[i].head == NULL)
   {
     edge * newHead = new edge;
+   
     newHead->adjacent = &table_list[i];
     newHead->outcome = new char[strlen(temp)+1];
     strcpy(newHead->outcome,temp);
     if(p > -1)
-    {
       newHead->newDecision = &table_list[p];
-    }
     table_list[i].head = newHead;
     
     table_list[i].head->next = NULL;
@@ -122,12 +113,11 @@ int table::connect_edge(char * temp, char * temp2){
   else
   {
     edge * newHead = new edge;
+    newHead->newDecision = &table_list[p];
     newHead->adjacent = &table_list[i];
     newHead->outcome = new char[strlen(temp)+1];
     strcpy(newHead->outcome,temp);
     newHead->next = table_list[i].head;
-    if(p > -1)
-      newHead->newDecision = &table_list[p];
 
     table_list[i].head = newHead;
     } 
@@ -136,12 +126,7 @@ int table::connect_edge(char * temp, char * temp2){
 bool table::getEdge(char * temp,char * temp2){
 
 
-  int x = connect_edge(temp,temp2);
-  if(x == -1)
-  {
-    cout << "No decision match. Please try again" << endl;
-    return true;
-  }
+  connect_edge(temp,temp2);
  
   char yn = ' ';
 
